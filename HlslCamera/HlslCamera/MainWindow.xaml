@@ -5,7 +5,8 @@
         Title="MainWindow" Height="720" Width="920">
     
     <Grid>
-        
+        <Image x:Name="image"/>
+
     </Grid>
     
 </Window>
