@@ -11,7 +11,9 @@ namespace HlslCamera
     {
         public static void NotifyError(string message)
         {
-            MessageBox.Show(Application.Current.MainWindow, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Application.Current.Dispatcher.Invoke(() =>
+                MessageBox.Show(Application.Current.MainWindow, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)
+            );
         }
     }
 }

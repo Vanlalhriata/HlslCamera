@@ -5,8 +5,37 @@
         Title="MainWindow" Height="720" Width="920">
     
     <Grid>
-        <Image x:Name="image"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
 
+                <Image x:Name="image" Grid.Column="1" Effect="{Binding ImageEffect}"/>
+                <TextBox Grid.Column="0" Text="{Binding HlslText, Mode=OneWayToSource}"
+                         AcceptsReturn="True"/>
+                
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0" Text="{Binding FxcPath, Mode=OneWayToSource, FallbackValue=C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.18362.0\\x64\\fxc.exe}"/>
+                <Button Grid.Column="1" Command="{Binding ExecuteCommand}">Execute</Button>
+
+            </Grid>
+            
+        </Grid>
+        
     </Grid>
     
 </Window>
