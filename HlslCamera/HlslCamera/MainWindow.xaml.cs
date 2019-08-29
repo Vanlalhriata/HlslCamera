@@ -42,7 +42,7 @@ namespace HlslCamera
             }
             catch (Exception exception)
             {
-                // TODO: Error
+                ErrorManager.NotifyError(exception.Message);
             }
         }
 

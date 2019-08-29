@@ -25,7 +25,7 @@ namespace HlslCamera
 
             if (videoDevicesList.Count < 1)
             {
-                // TODO: Error
+                ErrorManager.NotifyError("No video capture devices found.");
             }
             else
             {
