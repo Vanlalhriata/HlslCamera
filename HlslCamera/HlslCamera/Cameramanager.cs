@@ -43,7 +43,9 @@ namespace HlslCamera
 
         public void StopVideo()
         {
-            videoSource?.Stop();
+            if (null != videoSource) videoSource.NewFrame -= VideoSource_NewFrame;
+            videoSource?.SignalToStop();
+            videoSource = null;
         }
 
         private void application_Exit(object sender, ExitEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using HlslCamera.Infrastructure;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
 
 namespace HlslCamera
 {
@@ -27,6 +29,7 @@ namespace HlslCamera
         }
 
         public ICommand ExecuteCommand => new RelayCommand(execute);
+        public ICommand OpenImageCommand => new RelayCommand(openImage);
 
         private CameraManager cameraManager;
         private Process process;
@@ -61,6 +64,23 @@ namespace HlslCamera
             {
                 disposeProcess();
                 ErrorManager.NotifyError(exception.Message);
+            }
+        }
+
+        private void openImage(object parameter)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png | All file (*.*) | *.*";
+            bool? result = dialog.ShowDialog();
+            if (true == result)
+            {
+                cameraManager.OnNewFrame -= cameraManager_OnNewFrame;
+                cameraManager.StopVideo();
+
+                // Wait for NewFrame events
+                System.Threading.Tasks.Task.Delay(200).ContinueWith(t => 
+                    Application.Current.Dispatcher.Invoke(() => ImageSource = new BitmapImage(new Uri(dialog.FileName)))
+                );
             }
         }
 

@@ -24,6 +24,11 @@
                     <Image x:Name="image" Source="{Binding ImageSource}" Effect="{Binding ImageEffect}"/>
                     <Image Source="pack://application:,,,/GrangerRainbow.jpg" Effect="{Binding ImageEffect}"/>
                 </UniformGrid>
+
+                <Grid Grid.Column="1">
+                    <Button Width="60" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right"
+                            Command="{Binding OpenImageCommand}">Open</Button>
+                </Grid>
                 
             </Grid>
 
