@@ -1,5 +1,4 @@
 ﻿using HlslCamera.Infrastructure;
-using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -29,7 +28,7 @@ namespace HlslCamera
         }
 
         public ICommand ExecuteCommand => new RelayCommand(execute);
-        public ICommand OpenImageCommand => new RelayCommand(openImage);
+        public ICommand OpenCameraCommand => new RelayCommand(openCamera);
 
         private CameraManager cameraManager;
         private Process process;
@@ -41,6 +40,17 @@ namespace HlslCamera
             cameraManager = new CameraManager();
             cameraManager.OnNewFrame += cameraManager_OnNewFrame;
             cameraManager.InitializeVideo();
+        }
+        
+        public void SetImage(string fileName)
+        {
+            cameraManager.OnNewFrame -= cameraManager_OnNewFrame;
+            cameraManager.StopVideo();
+
+            // Wait for NewFrame events
+            System.Threading.Tasks.Task.Delay(200).ContinueWith(t =>
+                Application.Current.Dispatcher.Invoke(() => ImageSource = new BitmapImage(new Uri(fileName)))
+            );
         }
 
         private void execute(object parameter)
@@ -67,21 +77,10 @@ namespace HlslCamera
             }
         }
 
-        private void openImage(object parameter)
+        private void openCamera(object parameter)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png | All file (*.*) | *.*";
-            bool? result = dialog.ShowDialog();
-            if (true == result)
-            {
-                cameraManager.OnNewFrame -= cameraManager_OnNewFrame;
-                cameraManager.StopVideo();
-
-                // Wait for NewFrame events
-                System.Threading.Tasks.Task.Delay(200).ContinueWith(t => 
-                    Application.Current.Dispatcher.Invoke(() => ImageSource = new BitmapImage(new Uri(dialog.FileName)))
-                );
-            }
+            cameraManager.OnNewFrame += cameraManager_OnNewFrame;
+            cameraManager.InitializeVideo();
         }
 
         private void cameraManager_OnNewFrame(object sender, System.EventArgs e)

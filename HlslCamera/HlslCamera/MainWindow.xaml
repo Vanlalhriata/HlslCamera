@@ -26,8 +26,12 @@
                 </UniformGrid>
 
                 <Grid Grid.Column="1">
-                    <Button Width="60" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right"
-                            Command="{Binding OpenImageCommand}">Open</Button>
+                    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right">
+                        <Button Command="{Binding OpenImageCommand}" Click="openImage_Click"
+                                Width="80" Height="30">Open Image</Button>
+                        <Button Command="{Binding OpenCameraCommand}" Click="openCamera_Click"
+                                Width="80" Height="30" Visibility="Collapsed" x:Name="cameraButton">Camera</Button>
+                    </StackPanel>
                 </Grid>
                 
             </Grid>
