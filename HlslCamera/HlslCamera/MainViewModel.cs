@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 
 namespace HlslCamera
@@ -13,6 +14,12 @@ namespace HlslCamera
         public string HlslText { get; set; }
         public string FxcPath { get; set; }
 
+        public ImageSource ImageSource
+        {
+            get { return GetPropertyValue<ImageSource>(); }
+            set { SetPropertyValue(value); }
+        }
+
         public ShaderEffect ImageEffect
         {
             get { return GetPropertyValue<ShaderEffect>(); }
@@ -21,9 +28,17 @@ namespace HlslCamera
 
         public ICommand ExecuteCommand => new RelayCommand(execute);
 
+        private CameraManager cameraManager;
         private Process process;
         private string fxPath = "Shader.fx";
         private string psPath = "Shader.ps";
+
+        public MainViewModel()
+        {
+            cameraManager = new CameraManager();
+            cameraManager.OnNewFrame += cameraManager_OnNewFrame;
+            cameraManager.InitializeVideo();
+        }
 
         private void execute(object parameter)
         {
@@ -45,6 +60,20 @@ namespace HlslCamera
             catch (Exception exception)
             {
                 disposeProcess();
+                ErrorManager.NotifyError(exception.Message);
+            }
+        }
+
+        private void cameraManager_OnNewFrame(object sender, System.EventArgs e)
+        {
+            try
+            {
+                var bitmapSource = Utils.ToBitmapSource(cameraManager.CurrentBitmap);
+                bitmapSource.Freeze(); // avoid cross thread operations and prevents leaks
+                Application.Current.Dispatcher.Invoke(() => ImageSource = bitmapSource);
+            }
+            catch (Exception exception)
+            {
                 ErrorManager.NotifyError(exception.Message);
             }
         }

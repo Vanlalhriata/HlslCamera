@@ -41,10 +41,13 @@ namespace HlslCamera
             OnNewFrame?.Invoke(this, null);
         }
 
-        private void application_Exit(object sender, ExitEventArgs e)
+        public void StopVideo()
         {
             videoSource?.Stop();
+        }
 
+        private void application_Exit(object sender, ExitEventArgs e)
+        {
             if (null != OnNewFrame)
             {
                 var handlers = OnNewFrame.GetInvocationList();
@@ -53,6 +56,8 @@ namespace HlslCamera
                     OnNewFrame -= handler;
                 }
             }
+            
+            StopVideo();
         }
     }
 }

@@ -21,7 +21,7 @@
                          AcceptsReturn="True"/>
 
                 <UniformGrid Columns="1" Grid.Column="1">
-                    <Image x:Name="image"  Effect="{Binding ImageEffect}"/>
+                    <Image x:Name="image" Source="{Binding ImageSource}" Effect="{Binding ImageEffect}"/>
                     <Image Source="pack://application:,,,/GrangerRainbow.jpg" Effect="{Binding ImageEffect}"/>
                 </UniformGrid>
                 
