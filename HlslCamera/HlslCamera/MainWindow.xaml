@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="MainWindow" Height="720" Width="920">
+        Title="HLSL Camera" Height="720" Width="920">
     
     <Grid>
         <Grid>
@@ -38,13 +38,16 @@
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0" VerticalContentAlignment="Center"
-                         Text="{Binding FxcPath, Mode=OneWayToSource, FallbackValue=C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.18362.0\\x64\\fxc.exe}"/>
-                <Button Grid.Column="1" Command="{Binding ExecuteCommand}">Execute</Button>
+                <Button Grid.Column="0" Command="{Binding ExecuteCommand}">Execute</Button>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Path to Effect-Compiler tool (fxc.exe):" Margin="10, 1"/>
+                    <TextBox VerticalContentAlignment="Center" Margin="10, 1"
+                             Text="{Binding FxcPath, Mode=OneWayToSource, FallbackValue=C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.18362.0\\x64\\fxc.exe}"/>
+                </StackPanel>
 
             </Grid>
             
